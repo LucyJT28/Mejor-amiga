@@ -214,26 +214,22 @@
         let particles = [];
 
         card.addEventListener('click', () => {
-            if (!isOpen) {
-    card.classList.add('open');
-    isOpen = true;
-    audio.play().catch(e => console.log("Esperando clic"));
-}
+    if (!isOpen) {
+        card.classList.add('open');
+        isOpen = true;
+        audio.play().catch(e => console.log("Esperando clic"));
 
-                
-                // --- COREOGRAFÍA DE FUEGOS ARTIFICIALES (SÚPER LENTOS) ---
-                // Mismos tiempos perfectos
-                setTimeout(createMagicalExplosion, 2000); 
-                setTimeout(createGiantHeartExplosion, 4500); 
+        setTimeout(createMagicalExplosion, 2000);
+        setTimeout(createGiantHeartExplosion, 4500);
+    } else {
+        card.classList.remove('open');
+        isOpen = false;
+        audio.pause();
+        audio.currentTime = 0;
+        particles = [];
+    }
+});
 
-            } else {
-                card.classList.remove('open');
-                isOpen = false;
-                audio.pause();
-                audio.currentTime = 0;
-                particles = []; 
-            }
-        });
 
         // LÓGICA DE PARTÍCULAS (SÚPER LENTAS)
         // [Mismo código de partículas lento de antes, no cambia]
