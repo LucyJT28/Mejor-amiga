@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarjeta Mágica de Rosa Elegant para mi Amiga ❤️🌹</title>
+    <style>
+        /* ESTILOS BASE - No cambian */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #1a1a1a;
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+            perspective: 2500px; 
+        }
+
+        .gift-card {
+            width: 300px;
+            height: 420px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 2.5s cubic-bezier(0.1, 0.5, 0.1, 1);
+            cursor: pointer;
+            border-radius: 18px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+        }
+
+        .gift-card.open { transform: rotateY(-180deg); }
+
+        .face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 18px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* PORTADA */
+        .front-cover {
+            background: linear-gradient(135deg, #FF69B4 0%, #D02090 100%);
+            color: white;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            z-index: 2;
+            transform-origin: right center; 
+        }
+
+        .front-cover h1 { font-size: 24px; text-align: center; margin: 0; font-weight: 700; }
+        .gift-icon { font-size: 45px; margin-bottom: 20px; }
+
+        /* INTERIOR */
+        .interior {
+            background-color: #fdfdfd;
+            color: #333;
+            transform: rotateY(-180deg); 
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 20px;
+            z-index: 1;
+        }
+
+        .photo-container {
+            width: 130px; height: 130px;
+            border-radius: 50%; overflow: hidden;
+            border: 4px solid #D02090;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            margin-top: 10px;
+        }
+
+        .friend-photo { width: 100%; height: 100%; object-fit: cover; }
+
+        .message-container { text-align: center; width: 100%; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; z-index: 2; }
+        .message-container h2 { font-size: 18px; color: #D02090; margin-bottom: 8px; font-weight: 700; }
+        .message-container p { font-size: 13.5px; line-height: 1.6; margin: 0; opacity: 0.9; }
+
+        .fireworks-container { width: 100%; height: 140px; position: relative; margin-top: auto; z-index: 3; }
+        canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+
+        /* --- CÓDIGO DE LA ROSA QUE SE ABRE Y SE CIERRA 🌹✨ --- */
+        
+        /* Contenedor de la rosa en la PORTADA */
+        .rose-container-cover {
+            width: 60px; height: 60px; margin-top: 20px;
+            position: relative;
+        }
+
+        /* Contenedor de la rosa en el INTERIOR */
+        .rose-container-interior {
+            position: absolute;
+            width: 90px; height: 90px;
+            bottom: 40px; /* Cerca del corazón ❤️ */
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0.7; /* Un poco transparente para no tapar */
+            z-index: 1;
+        }
+
+        /* SVG de la rosa */
+        .rose-svg { width: 100%; height: 100%; overflow: visible; }
+
+        /* Colores de la rosa */
+        .rose-main { fill: #B22222; } /* Rojo Carmesí */
+        .rose-accent { fill: #FF0000; } /* Rojo Brillante */
+        .rose-dark { fill: #8B0000; } /* Rojo Oscuro */
+        .rose-stem { fill: #006400; } /* Verde Oscuro */
+        .rose-leaf { fill: #228B22; } /* Verde Mar */
+
+        /* Animación del ciclo de la rosa (Abre y Cierra) 🌹✨ */
+        .rose-anim {
+            animation: breathe-rose 8s ease-in-out infinite; /* Ciclo lento de 8s */
+        }
+
+        /* Brillo pulsante para la rosa interior */
+        .rose-interior .rose-svg {
+            animation: pulsing-glow-rose 6s ease-in-out infinite;
+        }
+
+        /* --- ANIMACIONES CSS --- */
+
+        /* 1. Breathe-Rose: El ciclo suave de abrir y cerrar (escalado sutil) */
+        @keyframes breathe-rose {
+            0%, 100% { transform: scale(1.0); } /* Totalmente abierta */
+            50% { transform: scale(0.8); } /* Totalmente cerrada (poco a poco) */
+        }
+
+        /* 2. Pulsing-Glow-Rose: Brillo pulsante para el interior */
+        @keyframes pulsing-glow-rose {
+            0%, 100% { filter: drop-shadow(0 0 5px rgba(178, 34, 34, 0.4)); opacity: 1; }
+            50% { filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.6)); opacity: 0.8; }
+        }
+
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="gift-card" id="giftCard">
+        <div class="face front-cover">
+            <div class="gift-icon">🌸🪷🌸</div>
+            <h1>para mi querida mejor amiga tkm</h1>
+            
+            <div class="rose-container-cover">
+                <svg class="rose-svg" viewBox="0 0 100 100">
+                    <rect class="rose-stem" x="48" y="70" width="4" height="30"/>
+                    <path class="rose-leaf" d="M 52,80 C 65,85 65,95 52,100 Z"/>
+                    <path class="rose-leaf" d="M 48,80 C 35,85 35,95 48,100 Z"/>
+                    
+                    <g class="rose-anim" transform-origin="50 50">
+                        <circle class="rose-dark" cx="50" cy="50" r="30"/>
+                        <circle class="rose-main" cx="50" cy="50" r="25"/>
+                        <circle class="rose-accent" cx="50" cy="50" r="18"/>
+                        <circle class="rose-dark" cx="50" cy="50" r="8"/>
+                    </g>
+                </svg>
+            </div>
+
+            <p style="font-size: 12px; margin-top: 20px; opacity: 0.8;"></p>
+        </div>
+
+        <div class="face interior">
+            <div class="photo-container">
+                <img src="https://i.postimg.cc/MTjr0JjX/IMG_20260302_WA0006.jpg" alt="Nosotros" class="friend-photo">
+            </div>
+
+            <div class="message-container">
+                <h2>¡Gracias por ser tú! ❤️🌹!</h2>
+                <p>Eres la mejor amiga que podría pedir. Se que aveces puedo cometer errores pero quiero que sepas que te quiero mucho, eres lo mejor de mi vida.Tu eres lo mas importante para mi. ¡Te quiero mucho🌺🌹!</p>
+            </div>
+
+            <div class="rose-container-interior rose-interior">
+                <svg class="rose-svg" viewBox="0 0 100 100">
+                    <rect class="rose-stem" x="48" y="70" width="4" height="30"/>
+                    <path class="rose-leaf" d="M 52,80 C 65,85 65,95 52,100 Z"/>
+                    <path class="rose-leaf" d="M 48,80 C 35,85 35,95 48,100 Z"/>
+                    <g class="rose-anim" transform-origin="50 50">
+                        <circle class="rose-dark" cx="50" cy="50" r="30"/>
+                        <circle class="rose-main" cx="50" cy="50" r="25"/>
+                        <circle class="rose-accent" cx="50" cy="50" r="18"/>
+                        <circle class="rose-dark" cx="50" cy="50" r="8"/>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="fireworks-container">
+                <canvas id="fireworks"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <audio id="miMusica">
+        <source src="musica.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const card = document.getElementById('giftCard');
+        const canvas = document.getElementById('fireworks');
+        const ctx = canvas.getContext('2d');
+        const audio = document.getElementById('miMusica');
+
+        canvas.width = 300; 
+        canvas.height = 140; 
+
+        let isOpen = false;
+        let particles = [];
+
+        card.addEventListener('click', () => {
+            if (!isOpen) {
+                card.classList.add('open');
+                isOpen = true;
+                audio.play().catch(e => console.log("Interacción requerida"));
+                
+                // --- COREOGRAFÍA DE FUEGOS ARTIFICIALES (SÚPER LENTOS) ---
+                // Mismos tiempos perfectos
+                setTimeout(createMagicalExplosion, 2000); 
+                setTimeout(createGiantHeartExplosion, 4500); 
+
+            } else {
+                card.classList.remove('open');
+                isOpen = false;
+                audio.pause();
+                audio.currentTime = 0;
+                particles = []; 
+            }
+        });
+
+        // LÓGICA DE PARTÍCULAS (SÚPER LENTAS)
+        // [Mismo código de partículas lento de antes, no cambia]
+        function createMagicalExplosion() {
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            for (let i = 0; i < 35; i++) {
+                particles.push({
+                    type: 'dot', x: centerX, y: centerY,
+                    vx: (Math.random() - 0.5) * 1.5, vy: (Math.random() - 0.5) * 1.5,
+                    size: Math.random() * 2 + 1,
+                    color: `hsl(${Math.random() * 40 + 320}, 100%, 65%)`,
+                    life: 400, gravity: 0.001
+                });
+            }
+            for (let i = 0; i < 12; i++) {
+                particles.push({
+                    type: 'star', x: centerX, y: centerY,
+                    vx: (Math.random() - 0.5) * 2, vy: (Math.random() - 0.5) * 2,
+                    size: Math.random() * 5 + 2,
+                    color: `hsl(${Math.random() * 20 + 40}, 100%, 65%)`,
+                    life: 450, gravity: 0.0005,
+                    rotation: Math.random() * Math.PI * 2,
+                    spin: (Math.random() - 0.5) * 0.02
+                });
+            }
+            animate();
+        }
+
+        function createGiantHeartExplosion() {
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2 + 10; 
+            const particleCount = 110; 
+            for (let i = 0; i < particleCount; i++) {
+                const angle = (i / particleCount) * Math.PI * 2;
+                const heartX = 16 * Math.pow(Math.sin(angle), 3);
+                const heartY = 13 * Math.cos(angle) - 5 * Math.cos(2 * angle) - 2 * Math.cos(3 * angle) - Math.cos(4 * angle);
+                const scale = 5.2; 
+                particles.push({
+                    type: 'heart-dot', x: centerX, y: centerY,
+                    vx: heartX * scale * 0.04, vy: -heartY * scale * 0.04, 
+                    size: Math.random() * 3 + 1,
+                    color: `hsl(330, 100%, 75%)`, life: 500, gravity: 0.0001 
+                });
+            }
+        }
+
+        function drawStar(ctx, x, y, spikes, outerRadius, innerRadius, color, rotation) {
+            let rot = (Math.PI / 2) * 3 + rotation;
+            let cx = x; let cy = y;
+            let step = Math.PI / spikes;
+            ctx.beginPath();
+            ctx.moveTo(cx, cy - outerRadius);
+            for (let i = 0; i < spikes; i++) {
+                cx = x + Math.cos(rot) * outerRadius; cy = y + Math.sin(rot) * outerRadius;
+                ctx.lineTo(cx, cy); rot += step;
+                cx = x + Math.cos(rot) * innerRadius; cy = y + Math.sin(rot) * innerRadius;
+                ctx.lineTo(cx, cy); rot += step;
+            }
+            ctx.lineTo(x, y - outerRadius); ctx.closePath();
+            ctx.fillStyle = color; ctx.fill();
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p, i) => {
+                p.vx *= 0.995; p.vy *= 0.995; p.vy += p.gravity;
+                p.x += p.vx; p.y += p.vy;
+                p.life--;
+                ctx.globalAlpha = p.life / 400; 
+                if (p.type === 'star') {
+                    p.rotation += p.spin;
+                    drawStar(ctx, p.x, p.y, 5, p.size, p.size / 2, p.color, p.rotation);
+                } else {
+                    ctx.fillStyle = p.color;
+                    ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
+                }
+                ctx.globalAlpha = 1;
+                if (p.life <= 0) particles.splice(i, 1);
+            });
+            if (particles.length > 0) requestAnimationFrame(animate);
+        }
+    </script>
+</body>
+</html>
