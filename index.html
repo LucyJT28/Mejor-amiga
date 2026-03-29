@@ -213,20 +213,25 @@
         let isOpen = false;
         let particles = [];
 
-        card.addEventListener('click', () => {
-    // 1. En cuanto toca, aseguramos silencio y play por si el cel lo pide
+        
+
+
+        // LÓGICA DE PARTÍCULAS (SÚPER LENTAS)
+        // [Mismo código de partículas card.addEventListener('click', () => {
     if (!isOpen) {
+        // Forzamos silencio antes de cualquier cosa
         audio.volume = 0; 
+        
         audio.play().then(() => {
-            // 2. Si el audio arrancó, ahora sí abrimos la tarjeta y subimos volumen
+            // Si el audio arranca, esperamos un pelito y subimos volumen
             card.classList.add('open');
             isOpen = true;
-            audio.volume = 1;
+            setTimeout(() => { audio.volume = 1; }, 100);
             
             setTimeout(createMagicalExplosion, 2000);
             setTimeout(createGiantHeartExplosion, 4500);
         }).catch(e => {
-            // Si el cel bloquea el play, igual abrimos la tarjeta
+            // Si el audio falla, que al menos gire la tarjeta
             card.classList.add('open');
             isOpen = true;
         });
@@ -237,10 +242,7 @@
         audio.currentTime = 0;
     }
 });
-
-
-        // LÓGICA DE PARTÍCULAS (SÚPER LENTAS)
-        // [Mismo código de partículas lento de antes, no cambia]
+        
         function createMagicalExplosion() {
             const centerX = canvas.width / 2;
             const centerY = canvas.height / 2;
