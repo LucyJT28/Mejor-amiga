@@ -197,8 +197,8 @@
         </div>
     </div>
 
-    <audio id="miMusica"preload="none">
-        <source src="musica.mp3?v=2" type="audio/mpeg">
+    <audio id="miMusica" preload="none">
+        <source src="musica.mp3?v=3" type="audio/mpeg">
     </audio>
 
     <script>
@@ -218,30 +218,7 @@
 
         // LÓGICA DE PARTÍCULAS (SÚPER LENTAS)
         // [Mismo código de partículas card.addEventListener('click', () => {
-    if (!isOpen) {
-        // Forzamos silencio antes de cualquier cosa
-        audio.volume = 0; 
-        
-        audio.play().then(() => {
-            // Si el audio arranca, esperamos un pelito y subimos volumen
-            card.classList.add('open');
-            isOpen = true;
-            setTimeout(() => { audio.volume = 1; }, 100);
-            
-            setTimeout(createMagicalExplosion, 2000);
-            setTimeout(createGiantHeartExplosion, 4500);
-        }).catch(e => {
-            // Si el audio falla, que al menos gire la tarjeta
-            card.classList.add('open');
-            isOpen = true;
-        });
-    } else {
-        card.classList.remove('open');
-        isOpen = false;
-        audio.pause();
-        audio.currentTime = 0;
-    }
-});
+    
         
         function createMagicalExplosion() {
             const centerX = canvas.width / 2;
@@ -254,20 +231,62 @@
                     color: `hsl(${Math.random() * 40 + 320}, 100%, 65%)`,
                     life: 400, gravity: 0.001
                 });
-            }
-            for (let i = 0; i < 12; i++) {
-                particles.push({
-                    type: 'star', x: centerX, y: centerY,
-                    vx: (Math.random() - 0.5) * 2, vy: (Math.random() - 0.5) * 2,
-                    size: Math.random() * 5 + 2,
-                    color: `hsl(${Math.random() * 20 + 40}, 100%, 65%)`,
-                    life: 450, gravity: 0.0005,
-                    rotation: Math.random() * Math.PI * 2,
-                    spin: (Math.random() - 0.5) * 0.02
-                });
-            }
-            animate();
+          card.addEventListener('click', () => {
+    if (!isOpen) {
+        // 1. Silencio preventivo y Play
+        audio.volume = 0; 
+        audio.play().then(() => {
+            // 2. Si el audio arranca, giramos y subimos volumen
+            card.classList.add('open');
+            isOpen = true;
+            setTimeout(() => { audio.volume = 1; }, 100);
+            
+            setTimeout(createMagicalExplosion, 2000);
+            setTimeout(createGiantHeartExplosion, 4500);
+        }).catch(e => {
+            // 3. Si el audio falla, que al menos gire la tarjeta
+            card.classList.add('open');
+            isOpen = true;
+            console.log("Audio bloqueado por el navegador");
         });
+    } else {
+        // 4. Lógica para cerrar
+        card.classList.remove('open');
+        isOpen = false;
+        audio.pause();
+                audio.currentTime = 0;
+    }
+}); 
+                
+function createMagicalExplosion() {
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    for (let i = 0; i < 35; i++) {
+        particles.push({
+            type: 'dot', x: centerX, y: centerY,
+            vx: (Math.random() - 0.5) * 1.5, vy: (Math.random() - 0.5) * 1.5,
+            size: Math.random() * 2 + 1,
+            color: `hsl(${Math.random() * 40 + 320}, 100%, 65%)`,
+            life: 400, gravity: 0.001
+        });
+    }
+    for (let i = 0; i < 12; i++) {
+        particles.push({
+            type: 'star', x: centerX, y: centerY,
+            vx: (Math.random() - 0.5) * 2, vy: (Math.random() - 0.5) * 2,
+            size: Math.random() * 5 + 2,
+            color: `hsl(${Math.random() * 20 + 40}, 100%, 65%)`,
+            life: 450, gravity: 0.0005,
+            rotation: Math.random() * Math.PI * 2,
+            spin: (Math.random() - 0.5) * 0.02
+        });
+    }
+}
+
+animate(); 
+
+function createGiantHeartExplosion() {
+
 
         function createGiantHeartExplosion() {
             const centerX = canvas.width / 2;
