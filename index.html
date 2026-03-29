@@ -214,19 +214,27 @@
         let particles = [];
 
         card.addEventListener('click', () => {
+    // 1. En cuanto toca, aseguramos silencio y play por si el cel lo pide
     if (!isOpen) {
-        card.classList.add('open');
-        isOpen = true;
-        audio.play().catch(e => console.log("Esperando clic"));
-
-        setTimeout(createMagicalExplosion, 2000);
-        setTimeout(createGiantHeartExplosion, 4500);
+        audio.volume = 0; 
+        audio.play().then(() => {
+            // 2. Si el audio arrancó, ahora sí abrimos la tarjeta y subimos volumen
+            card.classList.add('open');
+            isOpen = true;
+            audio.volume = 1;
+            
+            setTimeout(createMagicalExplosion, 2000);
+            setTimeout(createGiantHeartExplosion, 4500);
+        }).catch(e => {
+            // Si el cel bloquea el play, igual abrimos la tarjeta
+            card.classList.add('open');
+            isOpen = true;
+        });
     } else {
         card.classList.remove('open');
         isOpen = false;
         audio.pause();
         audio.currentTime = 0;
-        particles = [];
     }
 });
 
@@ -257,7 +265,7 @@
                 });
             }
             animate();
-        }
+        });
 
         function createGiantHeartExplosion() {
             const centerX = canvas.width / 2;
